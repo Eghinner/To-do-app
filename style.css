@@ -130,6 +130,11 @@ ul li{
 	justify-content: center;
 }
 
+#clear{
+	position: relative;
+	z-index: 99;
+}
+
 input[type="radio"]{
 	display: none;
 }
@@ -152,11 +157,6 @@ button{
 button:hover{
 	color: #909497;
 }
-
-
-
-
-
 
 /* CHECKBOX */
 input[type="checkbox"]:checked + label{
@@ -226,3 +226,11 @@ input[type="checkbox"]:checked ~ label::after{
 	padding: 10px;
 	}
 }
+
+/*#active li{
+	cursor: move;
+}
+
+#all label{
+	cursor: move;
+}*/

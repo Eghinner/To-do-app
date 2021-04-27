@@ -5,9 +5,6 @@ const complete = document.querySelector('#complete');
 const button   = document.querySelector('#clear');
 const input1   = document.getElementById('item');
 
-let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
-localStorage.setItem('items', JSON.stringify(itemsArray));
-const data = JSON.parse(localStorage.getItem('items'));
 ////////////////////////////////////////////////////////////////////////////
 let itemsArray2 = localStorage.getItem('items2') ? JSON.parse(localStorage.getItem('items2')) : [];
 localStorage.setItem('items2', JSON.stringify(itemsArray2));
@@ -33,6 +30,7 @@ const data3 = JSON.parse(localStorage.getItem('Ready'));
   
   const label = document.createElement('label');
   label.setAttribute("for", counter2++);
+  label.setAttribute("class", "drag");
   ul.appendChild(div);
   div.appendChild(label);
   label.textContent = text;
@@ -47,27 +45,19 @@ const data3 = JSON.parse(localStorage.getItem('Ready'));
       itemsArray2[input.id].state = "off";
       localStorage.setItem('items2', JSON.stringify(itemsArray2));
       }
+      // let great = data2.filter(goal=>goal.state=="on");
+      //       localStorage.setItem('Ready', JSON.stringify(great));
+      // let xiqui = data2.filter(goal=>goal.state=="off");
+      //       localStorage.setItem('UnReady', JSON.stringify(xiqui));
   });
-
-  // var task_names = data2.map(function(omi) { 
-  //     return omi.state == "on" ? input.checked = true : input.checked = false;
-  // });
       data2[input.id].state == "on" ? input.checked = true : input.checked = false;
-      // console.log(itemsArray2);
-      // console.log(data2);
 /////End Limaker
 }
 
 form.addEventListener('submit', function (e) {
   // e.preventDefault();
-  itemsArray.push(input1.value);
-  localStorage.setItem('items', JSON.stringify(itemsArray));
-
   itemsArray2.push({task:input1.value, state:"off"});
   localStorage.setItem('items2', JSON.stringify(itemsArray2));
-
-  // console.log(itemsArray);
-  
   liMaker(input1.value);
   input1.value = "";
 
@@ -75,22 +65,19 @@ form.addEventListener('submit', function (e) {
 
 data2.forEach(item => {
   liMaker(item.task);
-  // console.log(item);
 });
-
-
-
 button.addEventListener('click', function () {
+  // localStorage.removeItem('items2','[0]');
   localStorage.clear();
   while (ul.firstChild) {
     ul.removeChild(ul.firstChild);
   }
-  itemsArray = [];
   itemsArray2 = [];
 });
 
 ///////////////////// ACTIVO /////////////////////
 //FILTRO
+// const bitch2 = function(){};
 let xiqui = data2.filter(goal=>goal.state=="off");
 localStorage.setItem('UnReady', JSON.stringify(xiqui));
 // CREAR_LISTA
@@ -99,12 +86,14 @@ function liMaker_active(text_active){
   li.textContent = text_active;
   active.appendChild(li);
 }
+
 // ITERAR_EN_UL
 xiqui.forEach(item => {
   liMaker_active(item.task);
 });
 ///////////////////// COMPLETADO /////////////////////
 //FILTRO
+// const bitch = function(){};
 let great = data2.filter(goal=>goal.state=="on");
 localStorage.setItem('Ready', JSON.stringify(great));
 // CREAR_LISTA
@@ -113,17 +102,15 @@ function liMaker_complete(text_complete){
   li.textContent = text_complete;
   complete.appendChild(li);
 }
+
 // ITERAR_EN_UL
 great.forEach(item => {
   const li = document.createElement('li');
   liMaker_complete(item.task);
 });
 
-
-
-
+// CAMBIO DE LISTAS
     let kawaii = document.querySelector('#kawaii');
-
     kawaii.addEventListener('change', function (e) {
         let target = e.target;
         let message;
@@ -145,8 +132,6 @@ great.forEach(item => {
                 break;
         }
     });
-
-
 // Themes
 var switch_theme = document.querySelector('#switch');
 var moon = document.querySelector('#moon');
@@ -158,7 +143,6 @@ function setTheme(themeName) {
             localStorage.setItem('theme', themeName);
             document.documentElement.className = themeName;
         }
-
 switch_theme.addEventListener('click', function(themeName){
   if (localStorage.getItem('theme') === 'theme-dark') {
         setTheme('theme-light');
@@ -174,7 +158,6 @@ switch_theme.addEventListener('click', function(themeName){
         img_moon.style.display="none";
     }
 });
-
 (function () {
     if (localStorage.getItem('theme') === 'theme-dark') {
         setTheme('theme-dark');
@@ -182,3 +165,63 @@ switch_theme.addEventListener('click', function(themeName){
         setTheme('theme-light');
     }
 })();
+
+
+// SORTABLE
+Sortable.create(active, {
+  group: {
+    name: "order_active"
+  },
+  animation: 350, 
+  easing: "cubic-bezier(0.64, 0, 0.78, 0)",
+  handle: "li",
+  draggClass: "invisible",
+  store: {
+    get: function (sortable) {
+      var order = localStorage.getItem(sortable.options.group.name);
+      return order ? order.split('|') : [];
+    },
+    set: function (sortable) {
+      var order = sortable.toArray();
+      localStorage.setItem(sortable.options.group.name, order.join('|'));
+    }
+  }
+});
+Sortable.create(complete, {
+  group: {
+    name: "order_complete"
+  },
+  animation: 350, 
+  easing: "cubic-bezier(0.64, 0, 0.78, 0)",
+  handle: "li",
+  draggClass: "invisible",
+  store: {
+    get: function (sortable) {
+      var order = localStorage.getItem(sortable.options.group.name);
+      return order ? order.split('|') : [];
+    },
+    set: function (sortable) {
+      var order = sortable.toArray();
+      localStorage.setItem(sortable.options.group.name, order.join('|'));
+    }
+  }
+});
+Sortable.create(ul, {
+  group: {
+    name: "order_all"
+  },
+  animation: 350, 
+  easing: "cubic-bezier(0.64, 0, 0.78, 0)",
+  draggable: ".label_cont",
+  draggClass: "invisible",
+  store: {
+    get: function (sortable) {
+      var order = localStorage.getItem(sortable.options.group.name);
+      return order ? order.split('|') : [];
+    },
+    set: function (sortable) {
+      var order = sortable.toArray();
+      localStorage.setItem(sortable.options.group.name, order.join('|'));
+    }
+  }
+});
