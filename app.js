@@ -3,8 +3,6 @@ const ul       = document.querySelector('#all');
 const active   = document.querySelector('#active');
 const complete = document.querySelector('#complete');
 const button   = document.querySelector('#clear');
-const finish   = document.querySelector('#finish');
-const proce    = document.querySelector('#proce');
 const input1   = document.getElementById('item');
 
 let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
@@ -37,9 +35,6 @@ const data3 = JSON.parse(localStorage.getItem('Ready'));
   label.setAttribute("for", counter2++);
   ul.appendChild(div);
   div.appendChild(label);
-  // div.appendChild(input);
-  // const span = document.createElement('span');
-  // label.appendChild(span);
   label.textContent = text;
   div.insertBefore(input,label);
 
@@ -150,3 +145,40 @@ great.forEach(item => {
                 break;
         }
     });
+
+
+// Themes
+var switch_theme = document.querySelector('#switch');
+var moon = document.querySelector('#moon');
+var sun = document.querySelector('#sun');
+var img_sun = document.querySelector('#img_sun');
+var img_moon = document.querySelector('#img_moon');
+
+function setTheme(themeName) {
+            localStorage.setItem('theme', themeName);
+            document.documentElement.className = themeName;
+        }
+
+switch_theme.addEventListener('click', function(themeName){
+  if (localStorage.getItem('theme') === 'theme-dark') {
+        setTheme('theme-light');
+        moon.style.display="block";
+        sun.style.display="none";
+        img_moon.style.display="block";
+        img_sun.style.display="none";
+    } else {
+        setTheme('theme-dark');
+        moon.style.display="none";
+        sun.style.display="block";
+        img_sun.style.display="block";
+        img_moon.style.display="none";
+    }
+});
+
+(function () {
+    if (localStorage.getItem('theme') === 'theme-dark') {
+        setTheme('theme-dark');
+    } else {
+        setTheme('theme-light');
+    }
+})();
