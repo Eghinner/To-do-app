@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>New Tab App</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+<!--   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css
+"> -->
+</head>
+
+<body>
+  <img src="images/bg-desktop-light.jpg">
+  <div class="contain">
+  <div class="contain_center">
+    <h1>TODO</h1>
+    <form>
+      <input class="enter" id="item" type="text" placeholder="Create a new todo..">
+    </form>
+
+    <ul id="all"></ul>
+    <ul id="active" style="display: none;"></ul>
+    <ul id="complete" style="display: none;"></ul>
+
+<div class="barra_display">
+  <p>Items</p>
+<form id="kawaii">
+<label class="laurels" for="show_all">
+ <input type="radio" id="show_all" name="status" checked>
+All</label> 
+ <label class="laurels" for="show_active">
+ <input type="radio" id="show_active" name="status">
+Active</label> 
+<label class="laurels" for="show_complete">
+ <input type="radio" id="show_complete" name="status">
+Completed</label> 
+</form>
+  <button id="clear">Clear All</button>
+</div>
+</div>
+</div>
+  <script src="app.js"></script>
+
+</body>
+
+</html>
