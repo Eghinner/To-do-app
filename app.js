@@ -4,22 +4,16 @@ const active   = document.querySelector('#active');
 const complete = document.querySelector('#complete');
 const button   = document.querySelector('#clear');
 const input1   = document.getElementById('item');
+const skina    = document.querySelector('p');
 
 ////////////////////////////////////////////////////////////////////////////
-let itemsArray2 = localStorage.getItem('items2') ? JSON.parse(localStorage.getItem('items2')) : [];
-localStorage.setItem('items2', JSON.stringify(itemsArray2));
-const data2 = JSON.parse(localStorage.getItem('items2'));
-
-// Tareas_Completadas
-let Ready = localStorage.getItem('Ready') ? JSON.parse(localStorage.getItem('Ready')) : [];
-localStorage.setItem('Ready', JSON.stringify(Ready));
-const data3 = JSON.parse(localStorage.getItem('Ready'));
-////////////////////
+let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+localStorage.setItem('items', JSON.stringify(itemsArray));
 
 // const liMaker = (text) => Que locura las flechas
-
  var counter = 0;
  var counter2 = 0;
+ var counter3 = 1;
  function liMaker(text){
   const div = document.createElement('div');
   div.setAttribute("class","label_cont");
@@ -35,90 +29,110 @@ const data3 = JSON.parse(localStorage.getItem('Ready'));
   div.appendChild(label);
   label.textContent = text;
   div.insertBefore(input,label);
-
+  
 
   input.addEventListener('change',function(){
     if (this.checked) {
-      itemsArray2[input.id].state = "on";
-      localStorage.setItem('items2', JSON.stringify(itemsArray2));
-      } else {
-      itemsArray2[input.id].state = "off";
-      localStorage.setItem('items2', JSON.stringify(itemsArray2));
+      itemsArray[input.id].state = "on";
+      localStorage.setItem('items', JSON.stringify(itemsArray));
+      let great2 = itemsArray.filter(goal=>goal.state=="on");
+      let tasks = great2.map(el=>el.task);
+
+      children = active.childNodes;
+      function get42() {
+              result = [];
+          for (var i = 0; i < children.length; i++) {
+              result.push(children[i].textContent);
+          }
+          return result;
       }
-      // let great = data2.filter(goal=>goal.state=="on");
-      //       localStorage.setItem('Ready', JSON.stringify(great));
-      // let xiqui = data2.filter(goal=>goal.state=="off");
-      //       localStorage.setItem('UnReady', JSON.stringify(xiqui));
-  });
-      data2[input.id].state == "on" ? input.checked = true : input.checked = false;
+      active.removeChild(active.childNodes[get42().indexOf(text)]);
+
+          liMaker_complete(text);
+
+      } else {
+      itemsArray[input.id].state = "off";
+      localStorage.setItem('items', JSON.stringify(itemsArray));
+      itemsArray = JSON.parse(localStorage.getItem('items'));
+
+      children = complete.childNodes;
+      function get42() {
+              result = [];
+          for (var i = 0; i < children.length; i++) {
+              result.push(children[i].textContent);
+          }
+          return result;
+      }
+      complete.removeChild(complete.childNodes[get42().indexOf(text)]);
+          liMaker_active(text);
+      }
+  });  
+      itemsArray[input.id].state === "on" ? input.checked = true : input.checked = false;
+      skina.textContent ="Items " + counter3++;
 /////End Limaker
 }
-
 form.addEventListener('submit', function (e) {
-  // e.preventDefault();
-  itemsArray2.push({task:input1.value, state:"off"});
-  localStorage.setItem('items2', JSON.stringify(itemsArray2));
+  e.preventDefault();
+  if (input1.value == ""){e.preventDefault();}else{
+  itemsArray.push({task:input1.value, state:"off"});
+  localStorage.setItem('items', JSON.stringify(itemsArray));
   liMaker(input1.value);
+  liMaker_active(input1.value);
   input1.value = "";
-
+}
 });
-
-data2.forEach(item => {
+itemsArray.forEach(item => {
   liMaker(item.task);
 });
 button.addEventListener('click', function () {
-  // localStorage.removeItem('items2','[0]');
-  localStorage.clear();
-  while (ul.firstChild) {
+  localStorage.removeItem('items');
+  while (ul.hasChildNodes()) {
     ul.removeChild(ul.firstChild);
   }
-  itemsArray2 = [];
+  while (active.firstChild) {
+    active.removeChild(active.firstChild);
+  }
+  while (complete.firstChild) {
+    complete.removeChild(complete.firstChild);
+  }
+/////////////////////////////////////////////////
+/////////////////////BUG////////////////////
+  ////////////////////////////////////////////
+  itemsArray = [];
+  ///////////////////////////////////////////////
+  ////////////////////////////////////////////
+  // localStorage.setItem('items', JSON.stringify(itemsArray));
 });
 
-///////////////////// ACTIVO /////////////////////
-//FILTRO
-// const bitch2 = function(){};
-let xiqui = data2.filter(goal=>goal.state=="off");
-localStorage.setItem('UnReady', JSON.stringify(xiqui));
-// CREAR_LISTA
+//////////////////////////////////////////
+let xiqui = itemsArray.filter(goal=>goal.state=="off");
 function liMaker_active(text_active){
   const li = document.createElement('li');
   li.textContent = text_active;
   active.appendChild(li);
 }
-
-// ITERAR_EN_UL
 xiqui.forEach(item => {
   liMaker_active(item.task);
 });
-///////////////////// COMPLETADO /////////////////////
-//FILTRO
-// const bitch = function(){};
-let great = data2.filter(goal=>goal.state=="on");
-localStorage.setItem('Ready', JSON.stringify(great));
-// CREAR_LISTA
+//////////////////////////////////////////
+let great = itemsArray.filter(goal=>goal.state=="on");
 function liMaker_complete(text_complete){
   const li = document.createElement('li');
   li.textContent = text_complete;
   complete.appendChild(li);
 }
-
-// ITERAR_EN_UL
 great.forEach(item => {
-  const li = document.createElement('li');
   liMaker_complete(item.task);
 });
 
-// CAMBIO DE LISTAS
-    let kawaii = document.querySelector('#kawaii');
-    kawaii.addEventListener('change', function (e) {
+// Switch_Ul
+    document.querySelector('#kawaii').addEventListener('change', function (e) {
         let target = e.target;
-        let message;
         switch (target.id) {
             case 'show_all':
-            ul.style.display = 'block';
             complete.style.display = 'none';
             active.style.display = 'none';
+            ul.style.display = 'block';
                 break;
             case 'show_active':
             complete.style.display = 'none';
@@ -134,11 +148,6 @@ great.forEach(item => {
     });
 // Themes
 var switch_theme = document.querySelector('#switch');
-var moon = document.querySelector('#moon');
-var sun = document.querySelector('#sun');
-var img_sun = document.querySelector('#img_sun');
-var img_moon = document.querySelector('#img_moon');
-
 function setTheme(themeName) {
             localStorage.setItem('theme', themeName);
             document.documentElement.className = themeName;
@@ -146,16 +155,8 @@ function setTheme(themeName) {
 switch_theme.addEventListener('click', function(themeName){
   if (localStorage.getItem('theme') === 'theme-dark') {
         setTheme('theme-light');
-        moon.style.display="block";
-        sun.style.display="none";
-        img_moon.style.display="block";
-        img_sun.style.display="none";
     } else {
         setTheme('theme-dark');
-        moon.style.display="none";
-        sun.style.display="block";
-        img_sun.style.display="block";
-        img_moon.style.display="none";
     }
 });
 (function () {

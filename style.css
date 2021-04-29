@@ -4,6 +4,8 @@
   --color-accent: #fd6f53;
   --font-color: hsl(236, 9%, 61%);
   --shadow: #C3C6C8;
+  --day: block;
+  --night: none;
 }
 .theme-dark {
   --color-primary: #1C2833;
@@ -11,6 +13,8 @@
   --color-accent: hsl(236, 33%, 92%);
   --font-color: hsl(233, 11%, 84%);
   --shadow: #111B24;
+  --day: none;
+  --night: block;
 }
 
 body{
@@ -18,9 +22,8 @@ body{
 	padding: 0;
 	font-family: 'Josefin Sans', sans-serif;
 	background: var(--color-primary);
+	transition: 0.7s;
 }
-
-
 
 img{
 	z-index: -999999;
@@ -56,6 +59,7 @@ svg:hover{
 }
 
 h1{
+	letter-spacing: 10px;
 	font-family: 'Josefin Sans', sans-serif;
 	font-weight: 900;
 	font-size: 40px;
@@ -79,7 +83,7 @@ ul {
 	overflow:scroll;
 	height:300px;
 	border-radius: 3px;
-	box-shadow: 0px 0px 40px 0px var(--shadow);
+	box-shadow: 0px 0px 20px 0px var(--shadow);
 }
 ul li{
 	background: var(--color-secondary);
@@ -113,7 +117,7 @@ ul li{
 
 .barra_display{
 	position: relative;
-	z-index: 10px;
+	z-index: ;
 	box-shadow: 0px 0px 40px 0px var(--shadow);
 	padding: 0px 10px;
 	border-radius: 0 3px;
@@ -123,7 +127,7 @@ ul li{
 }
 
 #kawaii{
-	margin: 6px 0px;
+	margin: 8px 0px;
 	position: relative;
 	bottom: 50px;
 	display: flex;
@@ -138,12 +142,18 @@ ul li{
 input[type="radio"]{
 	display: none;
 }
-input[type="radio"]:checked + .laurels{
-	color: hsl(220, 98%, 61%);
+input[type="radio"] + label{
+	cursor: pointer;
 }
-.laurels:hover{
-	color: hsl(236, 9%, 61%);	
+
+input[type="radio"] + label:hover{
+	color: hsl(236, 9%, 61%);
 }
+
+input[type=radio]:checked + label {
+  color:hsl(220, 98%, 61%);
+} 
+
 .laurels{
 	margin: 10px;
 }
@@ -214,7 +224,7 @@ input[type="checkbox"]:checked ~ label::after{
 	border-radius: 50%; 
 }
 
-@media (max-width: 375px){
+@media (max-width: 505px){
 	.contain_center{
 		width: 350px;
 	}
@@ -227,10 +237,8 @@ input[type="checkbox"]:checked ~ label::after{
 	}
 }
 
-/*#active li{
-	cursor: move;
+footer{
+	display: flex;
+	justify-content: center;
+	margin: auto;
 }
-
-#all label{
-	cursor: move;
-}*/
