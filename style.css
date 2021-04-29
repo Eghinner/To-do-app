@@ -93,10 +93,12 @@ ul::-webkit-scrollbar {
     height: 0;
 }
 .label_cont{
+	padding: 0px 10px;
 	background: var(--color-secundary);
 	display: flex;
+	justify-content: space-between;
 	border-bottom: solid 1px hsl(236, 33%, 92%);
-	width: 100%;
+	/*width: 100%;*/
 }
 .label_cont input{
 	position: relative;
@@ -241,4 +243,17 @@ footer{
 	display: flex;
 	justify-content: center;
 	margin: auto;
+}
+
+.fas{
+	font-size: 25px;
+	/*margin: 8px 0 0 0;*/
+	padding: 10px;
+	cursor: pointer;
+	border-radius: 20%;
+	transition: 0.5s;
+}
+
+.fas:hover{
+	background: hsl(236, 9%, 61%);
 }

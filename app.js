@@ -19,17 +19,59 @@ localStorage.setItem('items', JSON.stringify(itemsArray));
   div.setAttribute("class","label_cont");
   const input = document.createElement('input');
   input.setAttribute("type", "checkbox" );
-  input.setAttribute("name", "he");
+  // input.setAttribute("name", "he");
   input.setAttribute("id", counter++);
-  
   const label = document.createElement('label');
   label.setAttribute("for", counter2++);
-  label.setAttribute("class", "drag");
+  // label.setAttribute("class", "drag");
+  const icon = document.createElement('i');
+  icon.setAttribute("class", "fas fa-times");
   ul.appendChild(div);
   div.appendChild(label);
+  div.appendChild(icon);
   label.textContent = text;
   div.insertBefore(input,label);
   
+  icon.addEventListener('click',function(){
+    children1 = ul.childNodes;
+          function get41() {
+                  result = [];
+              for (var i = 0; i < children1.length; i++) {
+                  result.push(children1[i].textContent);
+              }
+              return result;
+          }
+      index=get41().indexOf(text);
+      itemsArray.splice(index, 1);
+      localStorage.setItem('items', JSON.stringify(itemsArray));    
+      ul.removeChild(ul.childNodes[get41().indexOf(text)]);
+
+      children2 = active.childNodes;
+            function get43() {
+                    result = [];
+                for (var i = 0; i < children2.length; i++) {
+                    result.push(children2[i].textContent);
+                }
+                return result;
+            }
+            if (get43().includes(text)) {
+              active.removeChild(active.childNodes[get43().indexOf(text)]);
+            }
+      
+
+      children3 = complete.childNodes;
+            function get44() {
+                    result = [];
+                for (var i = 0; i < children3.length; i++) {
+                    result.push(children3[i].textContent);
+                }
+                return result;
+            }
+            if (get44().includes(text)) {
+              complete.removeChild(complete.childNodes[get44().indexOf(text)]);
+            }
+  });
+
 
   input.addEventListener('change',function(){
     if (this.checked) {
@@ -47,8 +89,7 @@ localStorage.setItem('items', JSON.stringify(itemsArray));
           return result;
       }
       active.removeChild(active.childNodes[get42().indexOf(text)]);
-
-          liMaker_complete(text);
+      liMaker_complete(text);
 
       } else {
       itemsArray[input.id].state = "off";
@@ -64,7 +105,8 @@ localStorage.setItem('items', JSON.stringify(itemsArray));
           return result;
       }
       complete.removeChild(complete.childNodes[get42().indexOf(text)]);
-          liMaker_active(text);
+      
+      liMaker_active(text);
       }
   });  
       itemsArray[input.id].state === "on" ? input.checked = true : input.checked = false;
@@ -97,11 +139,11 @@ button.addEventListener('click', function () {
   }
 /////////////////////////////////////////////////
 /////////////////////BUG////////////////////
-  ////////////////////////////////////////////
+////////////////////////////////////////////
   itemsArray = [];
-  ///////////////////////////////////////////////
-  ////////////////////////////////////////////
-  // localStorage.setItem('items', JSON.stringify(itemsArray));
+///////////////////////////////////////////////
+////////////////////////////////////////////
+// localStorage.setItem('items', JSON.stringify(itemsArray));
 });
 
 //////////////////////////////////////////
@@ -212,9 +254,11 @@ Sortable.create(ul, {
     name: "order_all"
   },
   animation: 350, 
+  delay: 1000,
   easing: "cubic-bezier(0.64, 0, 0.78, 0)",
   draggable: ".label_cont",
-  draggClass: "invisible",
+  // handle: ".fas",
+  draggClass: "ghost",
   store: {
     get: function (sortable) {
       var order = localStorage.getItem(sortable.options.group.name);
